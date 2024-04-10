@@ -4,5 +4,6 @@ int add(int a, int b) {
 
 int main() {
     int a = 1, b = 2;
-    return add(a, b);
+    int v = add(a, b);
+    return v;
 }

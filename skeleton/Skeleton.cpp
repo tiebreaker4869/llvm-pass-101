@@ -12,22 +12,22 @@ namespace {
 struct SkeletonPass : public PassInfoMixin<SkeletonPass> {
     PreservedAnalyses run(Module &M, ModuleAnalysisManager &AM) {
         for (auto &F : M) {
+            // declare function
+            LLVMContext& ctx = F.getContext();
+            FunctionCallee logFunc = F.getParent()->getOrInsertFunction(
+                "logop", Type::getVoidTy(ctx), Type::getInt32Ty(ctx)
+            );
             for (auto& B: F) {
                 for (auto& I: B) {
                     if (auto* instr = dyn_cast<BinaryOperator>(&I)) {
                         // Insert at the point where the instr appears(before)
                         IRBuilder<> builder(instr);
 
-                        // Make operands as the same as instr
-                        Value* lhs = instr->getOperand(0);
-                        Value* rhs = instr->getOperand(1);
-                        Value* mul = builder.CreateMul(lhs, rhs);
+                        builder.SetInsertPoint(&B, ++builder.GetInsertPoint());
 
-                        // replace old uses of instr with mul
-                        for (auto& use: instr->uses()) {
-                            auto* user = use.getUser();
-                            user->setOperand(use.getOperandNo(), mul);
-                        }
+                        // Insert Function Call
+                        Value* args[] = {instr};
+                        builder.CreateCall(logFunc, args);
 
                         // we modified the code
                         return PreservedAnalyses::none();

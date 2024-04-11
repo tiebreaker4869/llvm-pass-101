@@ -1,6 +1,8 @@
 # LLVM Pass 101
 This repository contains simple code demonstrations of writing an LLVM pass, based on the blog post [LLVM for Grad Students](https://www.cs.cornell.edu/~asampson/blog/llvm.html).
 
+This project is licensed under the [MIT License](LICENSE).
+
 ## Overview
 LLVM is a powerful compiler infrastructure that can be leveraged for various program analysis and transformation tasks, beyond just implementing new compiler optimizations. This repository provides a starting point for graduate students and researchers to explore using LLVM in their own work.
 
